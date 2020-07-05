@@ -1,19 +1,17 @@
 
-import React, {CSSProperties, useState, useEffect, useRef} from 'react';
+import React, {CSSProperties, useState, useEffect} from 'react';
 import poaObject from './poaArr';
 
 export const PoaSystem = () =>{
-  const [ poa, setPOA] = useState<any>( poaObject() )
+  const [ poa ] = useState<any>( poaObject() )
   const [randValue, setRandValue] = useState<number>(0);
   const [lowerLimit, setLowerLimit] = useState<number | string>(0);
   const [upperLimit, setUpperLimit] = useState<number | string>(10);
 
   useEffect( ()=>{
     const value = generateNewValue()
-    let obj = poaObject();
-    console.log('obj', obj);
     setRandValue( value );
-  }, [])
+  }, []) //eslint-disable-line
 
 
   const generateNewValue = (): number=>{
@@ -22,6 +20,10 @@ export const PoaSystem = () =>{
     if( isNaN(lower) || isNaN(upper )) return -1;
 
     let value =  Math.floor( Math.random() * (upper - lower + 1) ) + lower;
+    if( value < 0) 
+      value = 0;
+    if( value > poa.length - 1)  
+      value = poa.length - 1;
     return value;
   };
 
@@ -35,7 +37,7 @@ export const PoaSystem = () =>{
       }
     }}
     style={content}>
-      <h1 style={{paddingTop: 10, margin: 0, textAlign: 'center', fontStyle:'italic'}}>POA System</h1>
+      <h1 style={{paddingTop: 10, margin: 0, textAlign: 'center', fontStyle:'italic'}}>POA Game</h1>
       <div style={{width: '600px', backgroundColor: '', margin: '0px auto'}}>
         <div style={{textAlign:'center', padding: 10,}}>Generate values between</div>
         <div style={{margin: '0px auto', backgroundColor: '', width: 170, padding: 0}}>
@@ -63,33 +65,12 @@ export const PoaSystem = () =>{
         </div>
       </div>
       <div style={{textAlign: 'center', fontSize: 12,fontStyle: 'italic'}}> Hover over the block to display the answer </div>
-
-      <div style={{width: 800, margin: '30px auto', backgroundColor: ''}}>
-        <span style={{fontWeight: 'bold', width: '50px', fontSize: 25, paddingBottom: 20, display: 'inline-block'}}>Nr</span>
-        <span style={{fontWeight: 'bold', width: '230px', fontSize: 25, paddingBottom: 20, display: 'inline-block'}}>Persons</span>
-        <span style={{fontWeight: 'bold', width: '230px',  fontSize: 25, paddingBottom: 20, display: 'inline-block'}}>Actions</span>
-        <span style={{fontWeight: 'bold',  width: '230px', fontSize: 25, paddingBottom: 20, display: 'inline-block'}}>Objects</span>
-        {poa.map( (item:any,index:number):any=>{return(
-          <div 
-            key={index} 
-            style={{border: '1px solid silver', padding: '2px 0px'}}
-          
-          >
-            <span style={{display: 'inline-block', width: 30}}>{item.nr}</span>
-            <span style={{display: 'inline-block', width: 230}}>{item.person} </span>
-            <span style={{display: 'inline-block', width: 270}}>{item.action} </span>
-            <span style={{display: 'inline-block', width: 230}}>{item.object} </span>
-          </div>
-        )
-        })}
-      </div>
-
     </div>
   )
 }
 
 const answerBlock = {
-  width: 900,
+  width: '100%',
   height: 100,
   textAlign: 'center',
   margin: '0px auto',
@@ -107,6 +88,7 @@ const answer = {
 
 const poaText = {
   display: 'inline-block',
+  verticalAlign: 'top',
   width: 250,
   fontWeight: 'bold',
   paddingTop: '30px',
@@ -133,10 +115,7 @@ const limits = {
 
 const content= {
   display: 'inline-block',
-  width: '77vw',
-  backgroundColor: '#f1f1f1',
-  padding: 0,
-  margin:0,
+  padding: "50px 0px",
   verticalAlign: 'top',
   borderBox: 'box-sizing'
 } as CSSProperties

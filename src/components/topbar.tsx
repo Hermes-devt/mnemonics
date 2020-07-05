@@ -23,8 +23,9 @@ const img = {
 
 const topbar = {
   position: 'relative',
+  display: 'inline-block',
   width: '100vw',
-  height: '60px',
+  height: '100%',
   backgroundColor: '#f1f1f1',
   padding: 0,
   margin:0,
